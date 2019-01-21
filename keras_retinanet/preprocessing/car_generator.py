@@ -62,7 +62,7 @@ class CarsGenerator(Generator):
         self.classes = {'1': 1}
 
         self.image_names = list(images.keys())
-        self.image_data = {img: [{'x1':box[0], 'y1': box[1], 'x2':box[2], 'y2':box[3], 'class': self.labels[box[4]]}
+        self.image_data = {img: [{'x1': box[0], 'y1': box[1], 'x2': box[2], 'y2': box[3], 'class': self.labels[box[4]]}
                                  for box in data if box[2] - box[0] > 0 and box[3] - box[1] > 0]
                            for img, data in images.items()}
         super(CarsGenerator, self).__init__(**kwargs)
