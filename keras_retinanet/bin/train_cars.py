@@ -241,8 +241,8 @@ def create_callbacks(model,
             ),
             verbose=1,
             save_best_only=True,
-            monitor="mAP",
-            mode='max'
+            monitor="loss",
+            mode='min'
         )
         checkpoint = RedirectModel(checkpoint, model)
         callbacks.append(checkpoint)
