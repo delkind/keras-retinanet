@@ -29,7 +29,7 @@ def get_session():
     return tf.Session(config=config)
 
 
-def create_car_generators(root_path, preprocess_image):
+def create_car_generators(root_path, preprocess_image, batch_size):
     """ Create generators for training and validation.
 
     Args
@@ -37,7 +37,7 @@ def create_car_generators(root_path, preprocess_image):
         preprocess_image : Function that preprocesses an image for the network.
     """
     common_args = {
-        'batch_size': 32,
+        'batch_size': batch_size,
         'config': None,
         'image_min_side': 800,
         'image_max_side': 1333,
@@ -55,7 +55,7 @@ def create_car_generators(root_path, preprocess_image):
     return train_generator, validation_generator
 
 
-def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=0.01, steps_per_epoch=10000, epochs=50, freeze_backbone=True):
+def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=0.01, steps_per_epoch=10000, epochs=50, freeze_backbone=True, batch_size=16):
     # create object that stores backbone information
     backbone = models.backbone(backbone_name)
 
@@ -63,7 +63,7 @@ def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=0.01, steps
     check_keras_version()
 
     # create the generators
-    train_generator, validation_generator = create_car_generators(root_path, backbone.preprocess_image)
+    train_generator, validation_generator = create_car_generators(root_path, backbone.preprocess_image, batch_size)
 
     # create the model
     if snapshot_file is not None:
@@ -94,6 +94,7 @@ def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=0.01, steps
         training_model,
         prediction_model,
         validation_generator,
+        batch_size
     )
 
     # start training
@@ -180,8 +181,8 @@ def create_callbacks(model,
                      training_model,
                      prediction_model,
                      validation_generator,
+                     batch_size,
                      snapshot_path='./',
-                     batch_size=1,
                      backbone='resnet50',
                      tensorboard_dir=None):
     """ Creates the callbacks to use during training.
