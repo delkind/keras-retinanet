@@ -47,7 +47,7 @@ def create_car_generators(root_path, preprocess_image, batch_size):
     transform_generator = random_transform_generator(flip_x_chance=0.5)
 
     train_generator = CarsGenerator(root_path,
-                                    transform_generator=transform_generator,
+                                    # transform_generator=transform_generator,
                                     **common_args
                                     )
 
