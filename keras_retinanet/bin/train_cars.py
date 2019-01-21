@@ -186,7 +186,7 @@ def create_callbacks(model,
                      batch_size,
                      snapshot_path='./',
                      backbone='resnet50',
-                     tensorboard_dir=None):
+                     tensorboard_dir='logs/'):
     """ Creates the callbacks to use during training.
 
     Args
