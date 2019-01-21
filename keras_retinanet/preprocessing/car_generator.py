@@ -61,7 +61,7 @@ class CarsGenerator(Generator):
         self.labels = {1: '1'}
         self.classes = {'1': 1}
 
-        self.image_names = images.keys()
+        self.image_names = list(images.keys())
         self.image_data = {img: [{'x1':box[0], 'y1': box[1], 'x2':box[2], 'y2':box[3], 'class': self.labels[box[4]]}
                                  for box in data] for img, data in images.items()}
         super(CarsGenerator, self).__init__(**kwargs)
@@ -99,7 +99,7 @@ class CarsGenerator(Generator):
     def image_path(self, image_index):
         """ Returns the image path for image_index.
         """
-        return os.path.join(self.base_dir, self.image_names[image_index])
+        return self.image_names[image_index]
 
     def image_aspect_ratio(self, image_index):
         """ Compute the aspect ratio for an image with image_index.

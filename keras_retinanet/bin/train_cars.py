@@ -1,4 +1,11 @@
 import os
+import sys
+
+if __name__ == '__main__':
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+    import keras_retinanet.bin  # noqa: F401
+
+    __package__ = "keras_retinanet.bin"
 
 import tensorflow as tf
 from .. import losses
@@ -48,9 +55,9 @@ def create_car_generators(root_path, preprocess_image):
     return train_generator, validation_generator
 
 
-def main(root_path, snapshot_file=None, backbone='resnet', lr=0.01, steps_per_epoch=10000, epochs=50, freeze_backbone=True):
+def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=0.01, steps_per_epoch=10000, epochs=50, freeze_backbone=True):
     # create object that stores backbone information
-    backbone = models.backbone(backbone)
+    backbone = models.backbone(backbone_name)
 
     # make sure keras is the minimum required version
     check_keras_version()
@@ -61,7 +68,7 @@ def main(root_path, snapshot_file=None, backbone='resnet', lr=0.01, steps_per_ep
     # create the model
     if snapshot_file is not None:
         print('Loading model, this may take a second...')
-        model = models.load_model(snapshot_file, backbone_name=backbone)
+        model = models.load_model(snapshot_file, backbone_name=backbone_name)
         training_model = model
         anchor_params = None
         prediction_model = retinanet_bbox(model=model, anchor_params=anchor_params)
@@ -250,5 +257,5 @@ def create_callbacks(model,
 
     return callbacks
 
-if __name__ == '__main__':
-    main('../', '../')
+
+main('../')
