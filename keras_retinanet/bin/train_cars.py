@@ -65,7 +65,7 @@ def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=0.01, epoch
     # create the generators
     train_generator, validation_generator = create_car_generators(root_path, backbone.preprocess_image, batch_size)
 
-    steps_per_epoch = train_generator.size() / batch_size
+    steps_per_epoch = train_generator.size() / batch_size * 10
 
     # create the model
     if snapshot_file is not None:
