@@ -37,7 +37,7 @@ def create_car_generators(root_path, preprocess_image):
         preprocess_image : Function that preprocesses an image for the network.
     """
     common_args = {
-        'batch_size': 1,
+        'batch_size': 32,
         'config': None,
         'image_min_side': 800,
         'image_max_side': 1333,
