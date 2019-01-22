@@ -264,4 +264,5 @@ def create_callbacks(model,
     return callbacks
 
 
-main('../', freeze_backbone=False)
+if __name__=='__main__':
+    main('../', freeze_backbone=False)
