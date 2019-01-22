@@ -239,7 +239,7 @@ def create_callbacks(model,
         checkpoint = keras.callbacks.ModelCheckpoint(
             os.path.join(
                 snapshot_path,
-                '{backbone}_{dataset_type}_{{epoch:02d}}.h5'.format(backbone=backbone,
+                '{backbone}_{dataset_type}.h5'.format(backbone=backbone,
                                                                     dataset_type='cars')
             ),
             verbose=1,
