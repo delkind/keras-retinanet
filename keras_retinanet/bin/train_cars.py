@@ -88,7 +88,7 @@ def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=0.01, epoch
         )
 
     # print model summary
-    print(training_model.summary())
+    # print(training_model.summary())
 
     # create the callbacks
     callbacks = create_callbacks(
