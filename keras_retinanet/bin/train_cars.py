@@ -47,7 +47,7 @@ def create_car_generators(root_path, preprocess_image, batch_size):
     transform_generator = random_transform_generator(flip_x_chance=0.5)
 
     train_generator = CarsGenerator(root_path,
-                                    # transform_generator=transform_generator,
+                                    transform_generator=transform_generator,
                                     **common_args
                                     )
 
@@ -87,6 +87,9 @@ def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=0.01, epoch
             lr=lr
         )
 
+    # print model summary
+    print(training_model.summary())
+
     # create the callbacks
     callbacks = create_callbacks(
         model,
@@ -102,7 +105,10 @@ def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=0.01, epoch
         steps_per_epoch=steps_per_epoch,
         epochs=epochs,
         verbose=1,
-        callbacks=callbacks
+        callbacks=callbacks,
+        workers=1,
+        use_multiprocessing=True,
+        max_queue_size=10
     )
 
 
@@ -258,4 +264,4 @@ def create_callbacks(model,
     return callbacks
 
 
-main('../')
+main('../', freeze_backbone=False)
