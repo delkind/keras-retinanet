@@ -97,7 +97,8 @@ def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=1e-5, epoch
         training_model,
         prediction_model,
         validation_generator,
-        batch_size
+        batch_size,
+        snapshot_path=snapshot_path
     )
 
     # start training
