@@ -55,7 +55,8 @@ def create_car_generators(root_path, preprocess_image, batch_size):
     return train_generator, validation_generator
 
 
-def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=0.01, epochs=50, freeze_backbone=True, batch_size=16):
+def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=1e-5, epochs=50, freeze_backbone=True, batch_size=1,
+         snapshot_path='/content/drive/My Drive/model_snapshots/'):
     # create object that stores backbone information
     backbone = models.backbone(backbone_name)
 
