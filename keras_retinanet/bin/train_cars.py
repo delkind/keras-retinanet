@@ -56,7 +56,7 @@ def create_car_generators(root_path, preprocess_image, batch_size):
 
 
 def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=1e-5, epochs=50, freeze_backbone=True,
-         batch_size=1):
+         batch_size=1, snapshot_path='./'):
     # create object that stores backbone information
     backbone = models.backbone(backbone_name)
 
@@ -97,7 +97,8 @@ def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=1e-5, epoch
         training_model,
         prediction_model,
         validation_generator,
-        batch_size
+        batch_size,
+        snapshot_path=snapshot_path
     )
 
     # start training
