@@ -106,9 +106,9 @@ def resnet_retinanet(num_classes, backbone='resnet50', inputs=None, modifier=Non
 
     from keras.applications.resnet50 import ResNet50
     source_model = ResNet50(include_top=False, weights='imagenet')
-    source_model.summary()
-    outputs = [source_model.get_layer(n).output for n in
-               ['activation_10', 'activation_22', 'activation_40', 'activation_49']]
+    layer_names = ['bn2c_branch2c', 'bn3d_branch2c', 'bn4f_branch2c', 'bn5c_branch2c']
+    outputs = [source_model.layers[i + 2].output for i, layer in enumerate(source_model.layers) if layer.name in
+               layer_names]
     resnet = keras.models.Model(inputs=[source_model.input], outputs=outputs)
 
     # invoke modifier if given
