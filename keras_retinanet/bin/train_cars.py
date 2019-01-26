@@ -55,8 +55,8 @@ def create_car_generators(root_path, preprocess_image, batch_size):
     return train_generator, validation_generator
 
 
-def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=1e-5, epochs=50, freeze_backbone=True, batch_size=1,
-         snapshot_path='/content/drive/My Drive/model_snapshots/'):
+def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=1e-5, epochs=50, freeze_backbone=True,
+         batch_size=1):
     # create object that stores backbone information
     backbone = models.backbone(backbone_name)
 
@@ -89,7 +89,7 @@ def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=1e-5, epoch
         )
 
     # print model summary
-    # print(training_model.summary())
+    print(training_model.summary())
 
     # create the callbacks
     callbacks = create_callbacks(
@@ -97,8 +97,7 @@ def main(root_path, snapshot_file=None, backbone_name='resnet50', lr=1e-5, epoch
         training_model,
         prediction_model,
         validation_generator,
-        batch_size,
-        snapshot_path=snapshot_path
+        batch_size
     )
 
     # start training
@@ -154,8 +153,7 @@ def create_models(backbone_retinanet, num_classes, weights, multi_gpu=0,
         anchor_params = parse_anchor_parameters(config)
         num_anchors = anchor_params.num_anchors()
 
-    model = model_with_weights(backbone_retinanet(num_classes, num_anchors=num_anchors, modifier=modifier),
-                               weights=weights, skip_mismatch=True)
+    model = backbone_retinanet(num_classes, num_anchors=num_anchors, modifier=modifier)
     training_model = model
 
     # make prediction model
@@ -241,7 +239,7 @@ def create_callbacks(model,
         checkpoint = keras.callbacks.ModelCheckpoint(
             os.path.join(
                 snapshot_path,
-                '{backbone}_{dataset_type}.h5'.format(backbone=backbone,
+                '{backbone}_{dataset_type}_{{epoch:02d}}.h5'.format(backbone=backbone,
                                                                     dataset_type='cars')
             ),
             verbose=1,
@@ -266,5 +264,5 @@ def create_callbacks(model,
     return callbacks
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     main('../', freeze_backbone=False)

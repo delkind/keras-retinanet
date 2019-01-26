@@ -95,14 +95,20 @@ def resnet_retinanet(num_classes, backbone='resnet50', inputs=None, modifier=Non
             inputs = keras.layers.Input(shape=(None, None, 3))
 
     # create the resnet backbone
-    if backbone == 'resnet50':
-        resnet = keras_resnet.models.ResNet50(inputs, include_top=False, freeze_bn=True)
-    elif backbone == 'resnet101':
-        resnet = keras_resnet.models.ResNet101(inputs, include_top=False, freeze_bn=True)
-    elif backbone == 'resnet152':
-        resnet = keras_resnet.models.ResNet152(inputs, include_top=False, freeze_bn=True)
-    else:
-        raise ValueError('Backbone (\'{}\') is invalid.'.format(backbone))
+    # if backbone == 'resnet50':
+    #     resnet = keras_resnet.models.ResNet50(inputs, include_top=False, freeze_bn=True)
+    # elif backbone == 'resnet101':
+    #     resnet = keras_resnet.models.ResNet101(inputs, include_top=False, freeze_bn=True)
+    # elif backbone == 'resnet152':
+    #     resnet = keras_resnet.models.ResNet152(inputs, include_top=False, freeze_bn=True)
+    # else:
+    #     raise ValueError('Backbone (\'{}\') is invalid.'.format(backbone))
+
+    from keras.applications.resnet50 import ResNet50
+    source_model = ResNet50(include_top=False, weights='imagenet')
+    outputs = [source_model.get_layer(n).output for n in
+               ['activation_10', 'activation_22', 'activation_40', 'activation_49']]
+    resnet = keras.models.Model(inputs=[source_model.input], outputs=outputs)
 
     # invoke modifier if given
     if modifier:
