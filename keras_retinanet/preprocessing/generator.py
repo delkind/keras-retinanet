@@ -30,9 +30,9 @@ from ..utils.image import (
     TransformParameters,
     adjust_transform_for_image,
     apply_transform,
-    preprocess_image,
     resize_image,
 )
+from keras.applications.resnet50 import preprocess_input
 from ..utils.transform import transform_aabb
 
 
@@ -51,7 +51,7 @@ class Generator(keras.utils.Sequence):
         transform_parameters=None,
         compute_anchor_targets=anchor_targets_bbox,
         compute_shapes=guess_shapes,
-        preprocess_image=preprocess_image,
+        preprocess_image=preprocess_input,
         config=None
     ):
         """ Initialize Generator object.
