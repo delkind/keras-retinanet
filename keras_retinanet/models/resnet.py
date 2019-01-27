@@ -95,28 +95,28 @@ def resnet_retinanet(num_classes, backbone='resnet50', inputs=None, modifier=Non
             inputs = keras.layers.Input(shape=(None, None, 3))
 
     # create the resnet backbone
-    # if backbone == 'resnet50':
-    #     resnet = keras_resnet.models.ResNet50(inputs, include_top=False, freeze_bn=True)
-    # elif backbone == 'resnet101':
-    #     resnet = keras_resnet.models.ResNet101(inputs, include_top=False, freeze_bn=True)
-    # elif backbone == 'resnet152':
-    #     resnet = keras_resnet.models.ResNet152(inputs, include_top=False, freeze_bn=True)
-    # else:
-    #     raise ValueError('Backbone (\'{}\') is invalid.'.format(backbone))
+    if backbone == 'resnet50':
+        resnet = keras_resnet.models.ResNet50(inputs, include_top=False, freeze_bn=True)
+    elif backbone == 'resnet101':
+        resnet = keras_resnet.models.ResNet101(inputs, include_top=False, freeze_bn=True)
+    elif backbone == 'resnet152':
+        resnet = keras_resnet.models.ResNet152(inputs, include_top=False, freeze_bn=True)
+    else:
+        raise ValueError('Backbone (\'{}\') is invalid.'.format(backbone))
 
-    from keras.applications.resnet50 import ResNet50
-    source_model = ResNet50(include_top=False, weights='imagenet')
-    layer_names = ['bn2c_branch2c', 'bn3d_branch2c', 'bn4f_branch2c', 'bn5c_branch2c']
-    outputs = [source_model.layers[i + 2].output for i, layer in enumerate(source_model.layers) if layer.name in
-               layer_names]
-    resnet = keras.models.Model(inputs=[source_model.input], outputs=outputs)
+    # from keras.applications.resnet50 import ResNet50
+    # source_model = ResNet50(include_top=False, weights='imagenet')
+    # layer_names = ['bn2c_branch2c', 'bn3d_branch2c', 'bn4f_branch2c', 'bn5c_branch2c']
+    # outputs = [source_model.layers[i + 2].output for i, layer in enumerate(source_model.layers) if layer.name in
+    #            layer_names]
+    # resnet = keras.models.Model(inputs=[source_model.input], outputs=outputs)
 
     # invoke modifier if given
     if modifier:
         resnet = modifier(resnet)
 
     # create the full model
-    return retinanet.retinanet(inputs=source_model.input, num_classes=num_classes, backbone_layers=resnet.outputs[1:], **kwargs)
+    return retinanet.retinanet(inputs=resnet.input, num_classes=num_classes, backbone_layers=resnet.outputs[1:], **kwargs)
 
 
 def resnet50_retinanet(num_classes, inputs=None, **kwargs):
